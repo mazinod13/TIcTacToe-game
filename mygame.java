@@ -17,6 +17,7 @@ import javax.swing.plaf.FontUIResource;
 class mygame extends JFrame implements ActionListener{
     private JLabel heading,clockLabel;
     private JPanel panel;
+    boolean gameOver=false;
     FontUIResource font = new FontUIResource("", FontUIResource.BOLD, 35);
     JButton[] btns = new JButton[9];
     int winner = 2;
@@ -106,6 +107,12 @@ class mygame extends JFrame implements ActionListener{
         JButton currentButton = (JButton)e.getSource();
         String nameStr= currentButton.getName();
         int name= Integer.parseInt(nameStr.trim());
+
+        if (gameOver) {
+            JOptionPane.showMessageDialog(null,"GAME OVER......xXxXxXx.......");
+            return;
+            
+        }
         if (gameChances[name]==2) {
             if (activePlayer==1) {
                 currentButton.setIcon(new ImageIcon("images\\sdsad.PNG"));
@@ -119,6 +126,7 @@ class mygame extends JFrame implements ActionListener{
             for (int []temp : wps) {
                 if((gameChances[temp[0]]==gameChances[temp[1]]&&gameChances[temp[1]]==gameChances[temp[2]] && gameChances[temp[2]]!=2)){
                     winner=gameChances[temp[0]];
+                    gameOver=true;
                     JOptionPane.showMessageDialog(null,"player"+winner+"is the winner"); 
                     int i = JOptionPane.showConfirmDialog(this,"do you want to play more");
                         if (i==0) {
@@ -133,7 +141,33 @@ class mygame extends JFrame implements ActionListener{
                                             }
                 System.out.println(i);
                 break;
-            }}      
+            }
+
+        }  
+        //draw logic
+        int c= 0;
+        for(int x:gameChances){
+            if(x==2)
+            {
+                c++;
+                break;
+            }
+        } 
+        if(c==0 && gameOver==false)   {
+            JOptionPane.showMessageDialog(null, "Its Draw");
+                    int i = JOptionPane.showConfirmDialog(this,"do you want to play more?");
+                        if (i==0) {
+                        this.setVisible(false);
+                            new mygame();
+            
+                                }if (i==1) {
+            
+                                     System.exit(42848);
+                                                        }else {
+            
+                                            }
+
+        }
 
     }else{
         JOptionPane.showMessageDialog(this,"Position Occupied");
